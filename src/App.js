@@ -1,14 +1,19 @@
 import './App.css';
 import React from "react";
 import Main from "./components/main/Main";
-import {Header} from "semantic-ui-react";
+import {Image} from "semantic-ui-react";
 
 export default function App() {
     return (
         <div className="App">
-            <Header as='h1' >Socks</Header>
+            <div className="appBar">
+                <Image src={process.env.PUBLIC_URL + '/favicon.ico'} size="tiny"/>
+                <div className="appBarText">
+                    <h1 className="appHeader">Socks!</h1>
+                    <h5 className="appDescription">Progressive web application for testing SocketIO connections</h5>
+                </div>
+            </div>
             <Main/>
-            <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </div>
     );
 }

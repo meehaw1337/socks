@@ -1,0 +1,9 @@
+.incomingMessage {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.outgoingMessage {
+    margin-top: 10px;
+    text-align: left;
+}

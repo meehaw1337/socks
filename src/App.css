@@ -1,4 +1,31 @@
 .App {
     text-align: center;
+    height: 100%;
+}
+
+body, html, #root {
+    height: 100%;
+}
+
+.appBar {
+    display: flex;
+    flex-direction: row;
     padding: 20px;
+    background-color: #242322;
+}
+
+.appBarText {
+    text-align: left;
+    color: #e5e5e5;
+    margin-left: 30px;
+}
+
+.appHeader {
+    font-size: 30px;
+    letter-spacing: 3px;
+}
+
+.appDescription {
+    font-weight: 400;
+    letter-spacing: 1px;
 }

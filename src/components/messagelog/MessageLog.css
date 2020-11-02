@@ -1,6 +1,7 @@
-.incomingMessages {
+.messageLog {
     min-height: 310px;
     border: 1px solid lightgray;
     margin-top: 20px;
     padding: 20px;
+    background-color: #f6f6f6;
 }

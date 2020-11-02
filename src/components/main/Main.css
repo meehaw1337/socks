@@ -1,3 +1,10 @@
 .main {
-    padding: 20px;
+    padding-top: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    background-color: #f6f6f6;
+    height: 87%;
+}
+
+.footer {
 }
