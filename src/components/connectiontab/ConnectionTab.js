@@ -4,12 +4,14 @@ import './ConnectionTab.css'
 import socketIOClient from "socket.io-client";
 import OutgoingMessages from "../outgoing/OutgoingMessages";
 import IncomingMessages from "../incoming/IncomingMessages";
+const patch = require('socketio-wildcard')(socketIOClient.Manager);
 
 export default function ConnectionTab(props) {
     const [connectionUrl, setConnectionUrl] = useState('');
     const [socket, setSocket] = useState(null);
     const [loading, setLoading] = useState(false);
     const [connectionFailed, setConnectionFailed] = useState(false);
+    const [incomingMessages, setIncomingMessages] = useState([]);
 
     const connectionInputHandler = (event) => setConnectionUrl(event.target.value);
     const connectionButtonHandler = () => {
@@ -24,9 +26,12 @@ export default function ConnectionTab(props) {
         socket.on('connect', () => {
             setLoading(false);
             setConnectionFailed(false);
+            patch(socket);
+            socket.on('*', packet => {
+                setIncomingMessages(incomingMessages => [...incomingMessages, packet.data])
+            })
+            setSocket(socket);
         });
-
-        setSocket(socket);
     };
 
     return (
@@ -36,7 +41,7 @@ export default function ConnectionTab(props) {
                 :
                 <Header as="h5">Connection tab {props.id}</Header>
             }
-            <Input fluid error={connectionFailed} placeholder='Connection URL...' onChange={connectionInputHandler}
+            <Input fluid error={connectionFailed} placeholder='Connection URL' onChange={connectionInputHandler}
                    defaultValue={connectionUrl} size="large" action={{
                 content: 'Connect',
                 disabled: loading || connectionUrl === '',
@@ -45,10 +50,10 @@ export default function ConnectionTab(props) {
             }}/>
             <Grid columns={2}>
                 <Grid.Column>
-                    <OutgoingMessages />
+                    <OutgoingMessages socket={socket}/>
                 </Grid.Column>
                 <Grid.Column>
-                    <IncomingMessages />
+                    <IncomingMessages messages={incomingMessages}/>
                 </Grid.Column>
             </Grid>
         </div>
