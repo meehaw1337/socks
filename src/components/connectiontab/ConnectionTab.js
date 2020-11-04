@@ -4,6 +4,7 @@ import './ConnectionTab.css'
 import socketIOClient from "socket.io-client";
 import MessageSender from "../messagesender/MessageSender";
 import MessageLog from "../messagelog/MessageLog";
+
 const patch = require('socketio-wildcard')(socketIOClient.Manager);
 
 export default function ConnectionTab(props) {
@@ -12,6 +13,7 @@ export default function ConnectionTab(props) {
     const [loading, setLoading] = useState(false);
     const [connectionFailed, setConnectionFailed] = useState(false);
     const [messages, setMessages] = useState([]);
+    const [readyToSend, setReadyToSend] = useState(false);
 
     const connectionInputHandler = (event) => setConnectionUrl(event.target.value);
     const messageSentHandler = (message) => setMessages(messages => [...messages, message]);
@@ -22,18 +24,23 @@ export default function ConnectionTab(props) {
         socket.on('connect_error', () => {
             setLoading(false);
             setConnectionFailed(true);
-            socket.disconnect()
+            socket.disconnect();
         });
         socket.on('connect', () => {
             setLoading(false);
             setConnectionFailed(false);
+            setReadyToSend(true);
             patch(socket);
             socket.on('*', packet => {
-                console.log(packet.data)
                 setMessages(messages =>
-                    [...messages, {eventName: packet.data[0], messageContent: packet.data[1], type: 'incoming'}]
+                    [...messages, {
+                        eventName: packet.data[0],
+                        messageContent: packet.data[1],
+                        type: 'incoming',
+                        timestamp: new Date()
+                    }]
                 );
-            })
+            });
             setSocket(socket);
         });
     };
@@ -54,7 +61,7 @@ export default function ConnectionTab(props) {
             }}/>
             <Grid columns={2}>
                 <Grid.Column>
-                    <MessageSender socket={socket} messageSentHandler={messageSentHandler}/>
+                    <MessageSender socket={socket} messageSentHandler={messageSentHandler} readyToSend={readyToSend}/>
                 </Grid.Column>
                 <Grid.Column>
                     <MessageLog messages={messages}/>

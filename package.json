@@ -15,6 +15,7 @@
     "semantic-ui-react": "^2.0.1",
     "socket.io-client": "^2.3.1",
     "socketio-wildcard": "^2.0.0",
+    "uuid": "^8.3.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
