@@ -1,9 +1,13 @@
 .incomingMessage {
     margin-top: 10px;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .outgoingMessage {
     margin-top: 10px;
     text-align: left;
+    display: flex;
+    justify-content: flex-start;
 }
