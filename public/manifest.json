@@ -18,6 +18,12 @@
       "sizes": "512x512"
     }
   ],
+  "app": {
+    "launch": {
+      "height": 1366,
+      "width": 768
+    }
+  },
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
