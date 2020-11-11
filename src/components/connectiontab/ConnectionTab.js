@@ -1,11 +1,12 @@
-import {Grid, Header, Input} from "semantic-ui-react";
+import {Grid, Input} from "semantic-ui-react";
 import React, {useState} from "react";
 import './ConnectionTab.css'
 import socketIOClient from "socket.io-client";
 import MessageSender from "../messagesender/MessageSender";
 import MessageLog from "../messagelog/MessageLog";
+import socketio_wildcard from "socketio-wildcard";
 
-const patch = require('socketio-wildcard')(socketIOClient.Manager);
+const patch = socketio_wildcard(socketIOClient.Manager);
 
 export default function ConnectionTab(props) {
     const [connectionUrl, setConnectionUrl] = useState('');
@@ -30,6 +31,7 @@ export default function ConnectionTab(props) {
             setLoading(false);
             setConnectionFailed(false);
             setReadyToSend(true);
+            props.updateTabName(props.id, connectionUrl);
             patch(socket);
             socket.on('*', packet => {
                 setMessages(messages =>
@@ -47,11 +49,6 @@ export default function ConnectionTab(props) {
 
     return (
         <div className="connectionTab">
-            {props.initial ?
-                <Header as='h3'>You don't have any active connections, try creating a new one!</Header>
-                :
-                <Header as="h5">Connection tab {props.id}</Header>
-            }
             <Input fluid error={connectionFailed} placeholder='Connection URL' onChange={connectionInputHandler}
                    defaultValue={connectionUrl} size="large" action={{
                 content: 'Connect',
