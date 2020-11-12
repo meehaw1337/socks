@@ -1,11 +1,11 @@
 .messageSender {
-    height: 100%;
     min-height: 310px;
     max-height: 500px;
     border: 1px solid lightgray;
     margin-top: 20px;
     padding: 20px;
     background-color: #f6f6f6;
+    flex: 1;
 }
 
 .margin {

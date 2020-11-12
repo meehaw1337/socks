@@ -18,8 +18,8 @@ export default function MessageLog(props) {
             <Header as="h4"> Message log </Header>
             <div className="scroll">
                 {props.messages.map(message => <Message message={message} key={uuid()}/>)}
+                <div className="scrollDummy" ref={(el) => { messagesEnd = el; }} />
             </div>
-            <div className="scrollDummy" ref={(el) => { messagesEnd = el; }} />
         </div>
     );
 }

@@ -56,14 +56,10 @@ export default function ConnectionTab(props) {
                 loading: loading,
                 onClick: connectionButtonHandler
             }}/>
-            <Grid columns={2}>
-                <Grid.Column>
+            <div className="tabContent">
                     <MessageSender socket={socket} messageSentHandler={messageSentHandler} readyToSend={readyToSend}/>
-                </Grid.Column>
-                <Grid.Column>
                     <MessageLog messages={messages}/>
-                </Grid.Column>
-            </Grid>
+            </div>
         </div>
     );
 }
