@@ -8,11 +8,12 @@ export default function Main() {
         setPanes(panes => panes.map(pane => {
             if (pane.key === id) {
                 pane.menuItem =
-                    <Menu.Item key={id}>
+                    <Menu.Item key={id} className="tabMenuItem">
                         {name}
-                        <div className="closeTabIcon">
-                            <Icon name="close"/>
-                        </div>
+                        {id === '1' ? '' :
+                            <div className="closeTabIcon" onClick={() => removeTab(id)}>
+                                <Icon name="close"/>
+                            </div>}
                     </Menu.Item>
             }
 
@@ -21,37 +22,43 @@ export default function Main() {
     };
 
     const addNewTab = () => {
-        const id = `${panes.length + 1}`;
-        setPanes(panes => [...panes,
-            {
-                key: id,
-                menuItem:
-                    <Menu.Item key={id}>
-                        New tab
-                        <div className="closeTabIcon">
-                            <Icon name="close"/>
-                        </div>
-                    </Menu.Item>,
-                pane: {key: id, content: <ConnectionTab id={id} key={id} updateTabName={updateTabName}/>}
-            }
+        const id = `${panes[panes.length - 1].key + 1}`;
+        setPanes(panes => [...panes, {
+            key: id,
+            menuItem:
+                <Menu.Item key={id} className="tabMenuItem">
+                    New tab
+                    <div className="closeTabIcon" onClick={() => removeTab(id)}>
+                        <Icon name="close"/>
+                    </div>
+                </Menu.Item>,
+            pane: {key: id, content: <ConnectionTab id={id} key={id} updateTabName={updateTabName}/>}
+        }
         ])
     }
 
-    const [panes, setPanes] = useState([
-        {
-            key: '1',
-            menuItem: (<Menu.Item key="1">New tab</Menu.Item>),
-            pane: {key: '1', content: <ConnectionTab id='1' key='1' updateTabName={updateTabName}/>}
-        }
-    ]);
+    const removeTab = (id) => {
+        setPanes(panes => panes.filter(pane => pane.key !== id));
+    }
+
+    const [panes, setPanes] = useState([{
+        key: '1',
+        menuItem: (<Menu.Item key="1" className="tabMenuItem">New tab</Menu.Item>),
+        pane: {key: '1', content: <ConnectionTab id='1' key='1' updateTabName={updateTabName}/>}
+    }]);
 
     return (
         <div className="main">
-            <Tab panes={[...panes, {menuItem: <Button icon="add circle" onClick={addNewTab}/>}]}
-                 renderActiveOnly={false}/>
-            <div className="footer">Icons made by <a href="https://www.flaticon.com/authors/freepik"
-                                                     title="Freepik">Freepik</a> from <a
-                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+            <Tab renderActiveOnly={false} panes={[...panes, {
+                menuItem:
+                    <div className="addTabIcon">
+                        <Button icon="add" compact onClick={addNewTab}/>
+                    </div>
+            }]}/>
+            <div className="footer">Icons made by
+                <a href="https://www.flaticon.com/authors/freepik" title="Freepik"> Freepik </a> from
+                <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+            </div>
         </div>
     );
 }

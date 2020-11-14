@@ -1,4 +1,4 @@
-import {Grid, Input} from "semantic-ui-react";
+import {Divider, Input} from "semantic-ui-react";
 import React, {useState} from "react";
 import './ConnectionTab.css'
 import socketIOClient from "socket.io-client";
@@ -56,9 +56,12 @@ export default function ConnectionTab(props) {
                 loading: loading,
                 onClick: connectionButtonHandler
             }}/>
+            <div className="contentDivider">
+                <Divider section className="contentDivider"/>
+            </div>
             <div className="tabContent">
-                    <MessageSender socket={socket} messageSentHandler={messageSentHandler} readyToSend={readyToSend}/>
-                    <MessageLog messages={messages}/>
+                <MessageSender socket={socket} messageSentHandler={messageSentHandler} readyToSend={readyToSend}/>
+                <MessageLog messages={messages}/>
             </div>
         </div>
     );
