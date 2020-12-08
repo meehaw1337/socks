@@ -23,6 +23,7 @@ export default function Main() {
 
     const addNewTab = () => {
         const id = `${panes[panes.length - 1].key + 1}`;
+
         setPanes(panes => [...panes, {
             key: id,
             menuItem:
@@ -34,7 +35,9 @@ export default function Main() {
                 </Menu.Item>,
             pane: {key: id, content: <ConnectionTab id={id} key={id} updateTabName={updateTabName}/>}
         }
-        ])
+        ]);
+
+        setActiveIndex(panes.length);
     }
 
     const removeTab = (id) => {
@@ -46,10 +49,12 @@ export default function Main() {
         menuItem: (<Menu.Item key="1" className="tabMenuItem">New tab</Menu.Item>),
         pane: {key: '1', content: <ConnectionTab id='1' key='1' updateTabName={updateTabName}/>}
     }]);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     return (
         <div className="main">
-            <Tab renderActiveOnly={false} panes={[...panes, {
+            <Tab renderActiveOnly={false} activeIndex={activeIndex}
+                 onTabChange={(event, data) => setActiveIndex(data.activeIndex)} panes={[...panes, {
                 menuItem:
                     <div className="addTabIcon">
                         <Button icon="add" compact onClick={addNewTab}/>

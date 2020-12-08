@@ -18,12 +18,22 @@ export default function MessageSender(props) {
     const sendButtonHandler = () => {
         props.socket.emit(eventName, messageContent);
         props.messageSentHandler({eventName, messageContent, type: 'outgoing', timestamp: new Date()});
+
+        if (!eventNameHistory.includes(eventName)) {
+            setEventNameHistory(eventNameHistory => [...eventNameHistory, eventName]);
+        }
     };
+
+    const [eventNameHistory, setEventNameHistory] = useState([]);
 
     return (
         <div className="messageSender">
             <Header as="h4"> Send a message </Header>
-            <Input fluid placeholder="Event name" className="margin" onChange={eventInputHandler} value={eventName}/>
+            <Input fluid placeholder="Event name" className="margin" onChange={eventInputHandler} value={eventName}
+                   list='events'/>
+            <datalist id='events'>
+                {eventNameHistory.map(event => <option value={event}>{event}</option>)}
+            </datalist>
             <Form className="margin">
                 <TextareaAutosize placeholder="Message" onChange={contentInputHandler} value={messageContent}/>
             </Form>
@@ -35,17 +45,17 @@ export default function MessageSender(props) {
                 </GridColumn>
                 <GridColumn>
                     <div className="buttonRight margin">
-                    {props.readyToSend ?
-                        <div>
-                            <Button size="large" color="teal" onClick={sendButtonHandler}>Send</Button>
-                        </div>
-                        :
-                        <Popup basic content="You need to establish a connection first" trigger={
+                        {props.readyToSend ?
                             <div>
-                                <Button size="large" color="teal" disabled>Send</Button>
+                                <Button size="large" color="teal" onClick={sendButtonHandler}>Send</Button>
                             </div>
-                        }/>
-                    }
+                            :
+                            <Popup basic content="You need to establish a connection first" trigger={
+                                <div>
+                                    <Button size="large" color="teal" disabled>Send</Button>
+                                </div>
+                            }/>
+                        }
                     </div>
                 </GridColumn>
             </Grid>

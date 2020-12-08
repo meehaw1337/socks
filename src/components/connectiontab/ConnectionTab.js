@@ -37,7 +37,7 @@ export default function ConnectionTab(props) {
                 setMessages(messages =>
                     [...messages, {
                         eventName: packet.data[0],
-                        messageContent: packet.data[1],
+                        messageContent: JSON.stringify(packet.data[1]),
                         type: 'incoming',
                         timestamp: new Date()
                     }]
