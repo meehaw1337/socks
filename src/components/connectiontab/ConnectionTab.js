@@ -5,6 +5,7 @@ import socketIOClient from "socket.io-client";
 import MessageSender from "../messagesender/MessageSender";
 import MessageLog from "../messagelog/MessageLog";
 import socketio_wildcard from "socketio-wildcard";
+import MessageFilter from "../messagefilter/MessageFilter";
 
 const patch = socketio_wildcard(socketIOClient.Manager);
 
@@ -15,6 +16,7 @@ export default function ConnectionTab(props) {
     const [connectionFailed, setConnectionFailed] = useState(false);
     const [messages, setMessages] = useState([]);
     const [readyToSend, setReadyToSend] = useState(false);
+    const [messageFilter, setMessageFilter] = useState([]);
 
     const connectionInputHandler = (event) => setConnectionUrl(event.target.value);
     const messageSentHandler = (message) => setMessages(messages => [...messages, message]);
@@ -34,18 +36,26 @@ export default function ConnectionTab(props) {
             props.updateTabName(props.id, connectionUrl);
             patch(socket);
             socket.on('*', packet => {
-                setMessages(messages =>
-                    [...messages, {
-                        eventName: packet.data[0],
-                        messageContent: JSON.stringify(packet.data[1]),
-                        type: 'incoming',
-                        timestamp: new Date()
-                    }]
-                );
+                setMessageFilter(messageFilter => {
+                    console.log(messageFilter)
+                    if (messageFilter.length === 0 || messageFilter.includes(packet.data[0])) {
+                        setMessages(messages =>
+                            [...messages, {
+                                eventName: packet.data[0],
+                                messageContent: JSON.stringify(packet.data[1]),
+                                type: 'incoming',
+                                timestamp: new Date()
+                            }]
+                        );
+                    }
+
+                    return messageFilter;
+                });
             });
             setSocket(socket);
         });
     };
+    const clearMessageLog = () => setMessages([]);
 
     return (
         <div className="connectionTab">
@@ -60,8 +70,11 @@ export default function ConnectionTab(props) {
                 <Divider section className="contentDivider"/>
             </div>
             <div className="tabContent">
-                <MessageSender socket={socket} messageSentHandler={messageSentHandler} readyToSend={readyToSend}/>
-                <MessageLog messages={messages}/>
+                <div className="tabContentLeft">
+                    <MessageSender socket={socket} messageSentHandler={messageSentHandler} readyToSend={readyToSend}/>
+                    <MessageFilter setMessageFilter={setMessageFilter}/>
+                </div>
+                <MessageLog messages={messages} clearMessageLog={clearMessageLog}/>
             </div>
         </div>
     );

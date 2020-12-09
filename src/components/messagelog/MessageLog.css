@@ -1,6 +1,6 @@
 .messageLog {
     min-height: 310px;
-    max-height: 500px;
+    max-height: 1000px;
     border: 1px solid lightgray;
     padding: 20px;
     background-color: #f6f6f6;
@@ -11,8 +11,7 @@
 }
 
 .scroll {
-
-    max-height: 420px;
+    max-height: 550px;
     overflow-y: scroll;
     background-color: white;
     border: 1px solid lightgray;
@@ -23,4 +22,14 @@
 .scrollDummy {
     float: left;
     clear: both;
+}
+
+.buttonRight {
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.buttonLeft {
+    text-align: left;
 }

@@ -1,0 +1,13 @@
+.messageFilter {
+    border: 1px solid lightgray;
+    padding: 20px;
+    background-color: #f6f6f6;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-switch {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}

@@ -47,49 +47,51 @@ export default function MessageSender(props) {
     return (
         <div className="messageSender">
             <Header as="h4"> Send a message </Header>
-            <Input fluid placeholder="Event name" className="margin" onChange={eventInputHandler} value={eventName}
-                   list='events'/>
-            <datalist id='events'>
-                {eventNameHistory.map(event => <option value={event}>{event}</option>)}
-            </datalist>
-            <Form className="margin">
-                <Form.Field
-                    control={TextArea}
-                    onChange={contentInputHandler}
-                    placeholder="Message"
-                    error={parseFailedMessage === '' ? undefined : parseFailedMessage}
-                    value={messageContent}
-                />
-            </Form>
-            <Grid columns={2}>
-                <GridColumn>
-                    <div className="buttonLeft margin">
-                        <Button size="large" onClick={resetButtonHandler}>Reset</Button>
-                    </div>
-                </GridColumn>
-                <GridColumn>
-                    <div className="buttonRight margin">
-                        <div className="formatDropdown">
-                            <Menu compact>
-                                <Dropdown defaultValue={selectedFormat} options={formats}
-                                          onChange={(event, data) => setSelectedFormat(data.value)} fluid item
-                                          selection/>
-                            </Menu>
+            <div className="messageSenderContent">
+                <Input fluid placeholder="Event name" onChange={eventInputHandler} value={eventName}
+                       list='events'/>
+                <datalist id='events'>
+                    {eventNameHistory.map(event => <option value={event}>{event}</option>)}
+                </datalist>
+                <Form className="margin messageTextArea">
+                    <Form.Field
+                        control={TextArea}
+                        onChange={contentInputHandler}
+                        placeholder="Message"
+                        error={parseFailedMessage === '' ? undefined : parseFailedMessage}
+                        value={messageContent}
+                    />
+                </Form>
+                <Grid columns={2}>
+                    <GridColumn>
+                        <div className="buttonLeft margin">
+                            <Button size="large" onClick={resetButtonHandler}>Reset</Button>
                         </div>
-                        {props.readyToSend ?
-                            <div>
-                                <Button size="large" color="teal" onClick={sendButtonHandler}>Send</Button>
+                    </GridColumn>
+                    <GridColumn>
+                        <div className="buttonRight margin">
+                            <div className="formatDropdown">
+                                <Menu compact>
+                                    <Dropdown defaultValue={selectedFormat} options={formats}
+                                              onChange={(event, data) => setSelectedFormat(data.value)} fluid item
+                                              selection/>
+                                </Menu>
                             </div>
-                            :
-                            <Popup basic content="You need to establish a connection first" trigger={
+                            {props.readyToSend ?
                                 <div>
-                                    <Button size="large" color="teal" disabled>Send</Button>
+                                    <Button size="large" color="teal" onClick={sendButtonHandler}>Send</Button>
                                 </div>
-                            }/>
-                        }
-                    </div>
-                </GridColumn>
-            </Grid>
+                                :
+                                <Popup basic content="You need to establish a connection first" trigger={
+                                    <div>
+                                        <Button size="large" color="teal" disabled>Send</Button>
+                                    </div>
+                                }/>
+                            }
+                        </div>
+                    </GridColumn>
+                </Grid>
+            </div>
         </div>
     );
 }
