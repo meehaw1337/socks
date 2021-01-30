@@ -22,3 +22,5 @@ Run the app:
 $ npm start
 ```
 By default the app will be available on [localhost:3000](http://localhost:3000).
+## TODOs
+*display more information about the connection status
