@@ -24,3 +24,4 @@ $ npm start
 By default the app will be available on [localhost:3000](http://localhost:3000).
 ## TODOs
 * display more information about the connection status
+* add syntax highlighting and improved display to message data in message log
